@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💹 AutoBalance – Automated Crypto Portfolio Rebalancing SaaS
 
-## Getting Started
+An open-source SaaS built with **Next.js**, **Supabase**, and **Coinbase Developer Platform (CDP)** to automate crypto portfolio management.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🧠 Architecture Overview
+
+```mermaid
+flowchart TD
+  subgraph Client["Next.js Frontend (Vercel)"]
+    UI["Shadcn/Tailwind UI"]
+    Auth["Supabase Auth"]
+    API["Next.js API Routes"]
+  end
+
+  subgraph Backend["Supabase"]
+    DB["Postgres Database"]
+    Edge["Supabase Edge Functions"]
+    Cron["Vercel CRON Scheduler"]
+  end
+
+  subgraph External["Integrations"]
+    CDP["Coinbase Developer Platform"]
+    Stripe["Stripe Billing"]
+    Resend["Resend Email API"]
+  end
+
+  UI -->|User Login / Actions| Auth
+  Auth --> DB
+  API --> CDP
+  API --> Stripe
+  API --> Resend
+  Cron --> Edge
+  Edge -->|Trigger Rebalance Jobs| CDP
+  Edge --> DB
+  Stripe -->|Webhook Events| API
+  API --> DB
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** Next.js 15  
+- **Database:** Supabase (Postgres + Auth)  
+- **Styling:** Shadcn/UI + Tailwind CSS  
+- **Email:** Resend  
+- **Payments:** Stripe + Coinbase Pay  
+- **Scheduler:** Vercel CRON + Supabase Edge Functions  
+- **Package Manager:** pnpm (`pnpm dlx` for scripts)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧰 Local Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git clone https://github.com/yourname/autobalance.git
+cd autobalance
+pnpm install
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Environment Variables
 
-## Deploy on Vercel
+| Name | Description |
+|------|--------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase public key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key |
+| `STRIPE_SECRET_KEY` | Stripe API key |
+| `COINBASE_API_KEY` | Coinbase Developer Platform key |
+| `RESEND_API_KEY` | Resend email key |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💸 Monetization
+
+| Tier | Features | Price |
+|------|-----------|--------|
+| Free | Manual rebalance only | $0 |
+| Pro | Auto weekly rebalancing | $10/mo |
+| Premium | Daily rebalancing, multi-wallet | $30/mo |
+
+Payments handled via **Stripe Billing**, optional **Coinbase Pay** support.
+
+---
+
+## 🕒 CRON Example
+
+```json
+{
+  "crons": [
+    {
+      "path": "/api/cron/rebalance",
+      "schedule": "0 8 * * 1"
+    }
+  ]
+}
+```
+
+---
+
+## 📬 Emails
+
+Sent using **Resend** for notifications and summaries.
+
+---
+
+## 🧾 License
+
+MIT License © 2025 Perry Fardella
