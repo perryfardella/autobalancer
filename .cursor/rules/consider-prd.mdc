@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+
+# Product Requirements Document (PRD) Reference
+
+Always reference and consider the Product Requirements Document located at `docs/prd.md` when:
+
+- Making architectural decisions
+- Adding new features or components
+- Writing or modifying code
+- Answering questions about the project
+- Suggesting improvements or changes
+
+When implementing features, ensure they align with the PRD's vision, tech stack, and MVP scope. Always maintain consistency with the established architecture and user experience goals.
